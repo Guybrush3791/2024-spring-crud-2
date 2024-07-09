@@ -2,6 +2,7 @@ package org.java.spring_crud2.db.pojo;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,6 +34,8 @@ public class Product {
     private String status;
 
     @OneToMany(mappedBy = "product")
+    // , cascade = { CascadeType.REMOVE, CascadeType.PERSIST }) // cascade acts on
+    // the child
     private List<Review> reviews;
 
     public Product() {
@@ -134,6 +137,10 @@ public class Product {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public void clearReviews() {
+        reviews.clear();
     }
 
     @Override

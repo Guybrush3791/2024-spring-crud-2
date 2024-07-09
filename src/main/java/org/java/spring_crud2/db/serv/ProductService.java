@@ -40,6 +40,19 @@ public class ProductService {
         return productRepo.findById(id);
     }
 
+    @Transactional
+    public Optional<Product> getProductWReviews(int id) {
+
+        Optional<Product> optProduct = getProductById(id);
+
+        if (optProduct.isEmpty())
+            return Optional.empty();
+
+        Hibernate.initialize(optProduct.get().getReviews());
+
+        return optProduct;
+    }
+
     public void save(Product product) {
 
         productRepo.save(product);

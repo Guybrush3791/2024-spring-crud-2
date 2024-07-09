@@ -307,6 +307,35 @@ public class SpringCrud2Application
 
 			System.out.println("------------------------------------------");
 
+			Optional<Review> optReviewById1 = reviewServ.getReviewById(1);
+			if (optReviewById1.isEmpty()) {
+
+				System.out.println("Review with id 1 not found");
+			} else {
+
+				Review reviewById1 = optReviewById1.get();
+				reviewServ.delete(reviewById1);
+			}
+
+			int id = 1;
+			Optional<Product> optProductById1 = productService.getProductWReviews(id);
+			if (optProductById1.isEmpty()) {
+
+				System.out.println("Product with id 1 not found");
+			} else {
+
+				Product productById1 = optProductById1.get();
+				List<Review> product1Revs = productById1.getReviews();
+
+				System.out.println(product1Revs);
+
+				for (Review product1Rev : product1Revs)
+					reviewServ.delete(product1Rev);
+
+				productById1 = productService.getProductById(id).get();
+				productService.delete(productById1);
+			}
+
 		} catch (Exception e) {
 
 			System.out.println("Error in testRelations: " + e.getMessage());
