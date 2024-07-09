@@ -237,21 +237,57 @@ public class SpringCrud2Application
 	public void testRelations() {
 
 		try {
-			Review r1 = new Review(5, "Excellent product");
-			Review r2 = new Review(4, "Good product");
-			Review r3 = new Review(3, "Average product");
+			Product p1 = new Product(
+					"Product 1", "Description 1", 100, 10,
+					100,
+					"New");
+			Product p2 = new Product(
+					"Product 2", "Description 2", 200, 20,
+					200,
+					"Barely Used");
 
-			System.out.println(r1);
-			System.out.println(r2);
-			System.out.println(r3);
+			productService.save(p1);
+			productService.save(p2);
+
+			Review r1 = new Review(5, "Excellent product", p1);
+			Review r2 = new Review(4, "Good product", p2);
+			Review r3 = new Review(3, "Average product", p1);
+
+			// System.out.println(r1);
+			// System.out.println(r2);
+			// System.out.println(r3);
 
 			reviewServ.save(r1);
 			reviewServ.save(r2);
 			reviewServ.save(r3);
 
+			List<Product> products = productService.getAllProductsWReviews();
 			List<Review> reviews = reviewServ.getAllReviews();
 
+			System.out.println(products);
 			System.out.println(reviews);
+
+			System.out.println("------------------------------------------");
+
+			for (Product p : products) {
+
+				System.out.println(p.getName() + ":");
+
+				for (Review r : p.getReviews())
+					System.out.println("\t" + r.getRating() + " - " + r.getComment());
+			}
+
+			System.out.println("------------------------------------------");
+
+			for (Review r : reviews) {
+
+				Product p = r.getProduct();
+
+				System.out.println(p.getName() + ": " + r.getRating() + " - " + r.getComment());
+			}
+
+			System.out.println("------------------------------------------");
+
 		} catch (Exception e) {
 
 			System.out.println("Error in testRelations: " + e.getMessage());

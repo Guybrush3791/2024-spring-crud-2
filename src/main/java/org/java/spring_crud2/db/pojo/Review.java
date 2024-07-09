@@ -30,11 +30,12 @@ public class Review {
     public Review() {
     }
 
-    public Review(int rating, String comment)
+    public Review(int rating, String comment, Product product)
             throws Exception {
 
         setRating(rating);
         setComment(comment);
+        setProduct(product);
     }
 
     public int getId() {
@@ -67,6 +68,14 @@ public class Review {
             throw new Exception("Comment cannot be null or empty!");
 
         this.comment = comment;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     @Override
