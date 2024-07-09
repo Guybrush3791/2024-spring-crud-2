@@ -16,6 +16,25 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringCrud2Application
 		implements CommandLineRunner {
 
+	/**
+	 * TODO:
+	 * 
+	 * Continuando l'esercizio precedente, aggiungere
+	 * la classe Review, e definirla come entita' (senza
+	 * relazioni).
+	 * 
+	 * Dopo aver testato la classe, e aver verificato la
+	 * corretta presenza della tabella in DB, procedere
+	 * all'aggiunta della relazione tra Review e Product
+	 * di tipo uno-a-molti.
+	 * 
+	 * Testare le solite 4 funzioni di CRUD su entrambe le
+	 * entita', e verificare di riuscire a salvare e
+	 * caricare i prodotti e le recensioni con le
+	 * relative relazioni.
+	 * 
+	 */
+
 	@Autowired
 	private ProductService productService;
 
