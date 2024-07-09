@@ -1,32 +1,47 @@
 package org.java.spring_crud2.db.pojo;
 
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "prodotto")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
+    @Column(length = 64, nullable = false, unique = true)
     private String name;
+
+    @Column(columnDefinition = "TEXT", nullable = true)
     private String description;
 
     private int price;
     private int rebate;
 
     private int quantity;
+
+    @Column(length = 32, nullable = false)
     private String status;
+
+    @OneToMany(mappedBy = "product")
+    private List<Review> reviews;
 
     public Product() {
     }
 
     public Product(
             String name, String description, int price,
-            int rebate, int quantity, String status) {
+            int rebate, int quantity, String status)
+            throws Exception {
 
         setName(name);
         setDescription(description);
@@ -48,7 +63,11 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws Exception {
+
+        if (name == null || name.isEmpty())
+            throw new Exception("Name cannot be null or empty!");
+
         this.name = name;
     }
 
@@ -64,7 +83,11 @@ public class Product {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(int price) throws Exception {
+
+        if (price <= 0)
+            throw new Exception("Price cannot be less than or equal to 0!");
+
         this.price = price;
     }
 
@@ -72,7 +95,11 @@ public class Product {
         return rebate;
     }
 
-    public void setRebate(int rebate) {
+    public void setRebate(int rebate) throws Exception {
+
+        if (rebate < 0)
+            throw new Exception("Rebate cannot be less than 0!");
+
         this.rebate = rebate;
     }
 
@@ -80,7 +107,11 @@ public class Product {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(int quantity) throws Exception {
+
+        if (quantity < 0)
+            throw new Exception("Quantity cannot be less than 0!");
+
         this.quantity = quantity;
     }
 
@@ -92,6 +123,11 @@ public class Product {
         this.status = status;
     }
 
+    public int getFinalPrice() {
+
+        return (int) (getPrice() * (1 - (getRebate() / 100f)));
+    }
+
     @Override
     public String toString() {
 
@@ -101,6 +137,7 @@ public class Product {
                 ",\n\tdescription='" + description + '\'' +
                 ",\n\tprice=" + price +
                 ",\n\trebate=" + rebate +
+                ",\n\tfinalPrice=" + getFinalPrice() +
                 ",\n\tquantity=" + quantity +
                 ",\n\tstatus='" + status + '\'' +
                 "\n}";
